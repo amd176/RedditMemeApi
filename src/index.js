@@ -32,7 +32,9 @@ function reddit(url, location) {
             for (let i = 0; i < jsonFile.data.children.length; i++) {
                 let memeObj = {
                     "title": `${jsonFile.data.children[i].data.title}`,
-                    "link": `${jsonFile.data.children[i].data.url_overridden_by_dest}`,
+                    "file": `${jsonFile.data.children[i].data.url}`,
+                    "link": `https://www.reddit.com${jsonFile.data.children[i].data.permalink}`,
+                    "isVideo": `${jsonFile.data.children[i].data.is_video}`,
                 };
                 memeArray.push(memeObj);
             }
@@ -40,12 +42,41 @@ function reddit(url, location) {
         });
 }
 
-setInterval(reddit, 5000, "https://www.reddit.com/r/memes.json", "memes.json");
+setInterval(
+    reddit,
+    5000,
+    "https://www.reddit.com/r/memes.json",
+    `${__dirname}/memes.json`
+);
 setInterval(
     reddit,
     5000,
     "https://www.reddit.com/r/dankmemes.json",
-    "dankmemes.json"
+    `${__dirname}/dankmemes.json`
+);
+setInterval(
+    reddit,
+    5000,
+    "https://www.reddit.com/r/memes/new.json",
+    `${__dirname}/newmemes.json`
+);
+setInterval(
+    reddit,
+    5000,
+    "https://www.reddit.com/r/holup.json",
+    `${__dirname}/holup.json`
+);
+setInterval(
+    reddit,
+    5000,
+    "https://www.reddit.com/r/holup/new.json",
+    `${__dirname}/holupnew.json`
+);
+setInterval(
+    reddit,
+    5000,
+    "https://www.reddit.com/r/dankmemes/new.json",
+    `${__dirname}/danknew.json`
 );
 
 app.get("/", (req, res) => {
@@ -54,8 +85,32 @@ app.get("/", (req, res) => {
     });
 });
 
+app.get("/danknew", (req, res) => {
+    fs.readFile(__dirname + "/" + "danknew.json", "utf8", (err, data) => {
+        res.end(data);
+    });
+});
+
+app.get("/holupnew", (req, res) => {
+    fs.readFile(__dirname + "/" + "holupnew.json", "utf8", (err, data) => {
+        res.end(data);
+    });
+});
+
 app.get("/dank", (req, res) => {
     fs.readFile(__dirname + "/" + "dankmemes.json", "utf8", (err, data) => {
+        res.end(data);
+    });
+});
+
+app.get("/new", (req, res) => {
+    fs.readFile(__dirname + "/" + "newmemes.json", "utf8", (err, data) => {
+        res.end(data);
+    });
+});
+
+app.get("/holup", (req, res) => {
+    fs.readFile(__dirname + "/" + "holup.json", "utf8", (err, data) => {
         res.end(data);
     });
 });
